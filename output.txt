@@ -1,0 +1,5 @@
+|Orig Value|New Value|Diff|
+|-|-|-|
+|the quick brown fox<br><br>Then there was this text. |the slow brown fox<br><br>Then there was this|the <del>quick </del><ins>slow </ins>brown fox<br><br>Then there was <del>this text.</del><ins>this</ins>|
+|how now brown cow|how now red cow|how now <del>brown </del><ins>red </ins>cow|
+|Test shall be 100 ms in length<br><br>The reason for this is blah|Test shall be 50 ms in length<br><br>The reason for this is blarg.|Test shall be <del>100 </del><ins>50 </ins>ms in length<br><br>The reason for this is <del>blah</del><ins>blarg.</ins>|
