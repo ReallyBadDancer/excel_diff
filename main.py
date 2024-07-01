@@ -1,10 +1,11 @@
 from openpyxl import load_workbook
 from redlines import Redlines
+from diff_writer import output_to_excel_worksheet
 
 wb = load_workbook("test.xlsx")
 ws = wb.active
 
-with open('output.txt', mode='w') as ofile:
+with open('asdf.txt', mode='w') as ofile:
     ofile.write("|Orig Value|New Value|Diff|\n|-|-|-|\n")
 
     for row in ws.values:
@@ -33,6 +34,3 @@ with open('output.txt', mode='w') as ofile:
 # Step 4: Walk through list C, divide the list items into a list of strings and formats
     # For each element in C
         #
-
-
-
