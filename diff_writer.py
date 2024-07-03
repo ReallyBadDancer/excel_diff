@@ -11,7 +11,7 @@ def output_excel_formatting(orig: str, new: str, f_uline, f_sout, f_norm, wr) ->
     for tag, i1, i2, j1, j2 in opcodes:
         if tag == 'equal':
             result.append(f_norm)
-            result.append("".join(new[i1:i2]))
+            result.append("".join(orig[i1:i2]))
         elif tag == 'insert':
             result.append(f_uline)
             result.append("".join(new[j1:j2]))
@@ -32,7 +32,7 @@ def output_to_excel_worksheet(s1, s2, col, row):
     # Open a workbook and choose the column to format
     workbook = xlsxwriter.Workbook('rich_strings.xlsx')
     worksheet = workbook.add_worksheet()
-    worksheet.set_column(first_col=col, last_col=col, width=30)
+    worksheet.set_column(first_col=col, last_col=col, width=100)
     # Set up some formats to use.
     normal = workbook.add_format()
     underline = workbook.add_format({'underline': True, 'font_color': 'green'})
@@ -47,6 +47,6 @@ def output_to_excel_worksheet(s1, s2, col, row):
 
 
 if __name__ == '__main__':
-    string_a = "abcdeflmnop"
-    string_b = "abcdefg\nhijk"
+    string_a = "The quick brown fox jumped over the lazy dog"
+    string_b = "The slow brown fox walked over a lazy cat"
     output_to_excel_worksheet(string_a, string_b, 0, 0)
