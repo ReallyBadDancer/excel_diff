@@ -17,11 +17,13 @@ def output_excel_formatting(orig: str, new: str, f_uline: Format, f_sout: Format
             result.append(f_uline)
             result.append("".join(new[j1:j2]))
         elif tag == 'delete':
-            result.append(f_sout)
-            result.append("".join(orig[i1:i2]))
+            if orig[i1:i2] != "\n":
+                result.append(f_sout)
+                result.append("".join(orig[i1:i2].replace("\n", "")))
         elif tag == 'replace':
-            result.append(f_sout)
-            result.append("".join(orig[i1:i2]))
+            if orig[i1:i2] != "\n":
+                result.append(f_sout)
+                result.append("".join(orig[i1:i2].replace("\n", "")))
             result.append(f_uline)
             result.append("".join(new[j1:j2]))
 
@@ -42,8 +44,8 @@ def output_to_excel_worksheet(diff_list: list) -> None:
     wrap.set_text_wrap()
 
     for (s1, s2), row in zip(diff_list, range(len(diff_list))):
-        worksheet.write(row, 0, s1)
-        worksheet.write(row, 1, s2)
+        worksheet.write(row, 0, s1, wrap)
+        worksheet.write(row, 1, s2, wrap)
         diff = output_excel_formatting(s1, s2, underline, strikeout, normal, wrap)
         worksheet.write_rich_string(row, 2, *diff)
 
