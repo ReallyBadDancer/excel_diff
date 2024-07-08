@@ -31,9 +31,9 @@ def output_excel_formatting(orig: str, new: str, f_uline: Format, f_sout: Format
     return result
 
 
-def output_to_excel_worksheet(diff_list: list) -> None:
+def output_to_excel_worksheet(diff_list: list, ofilename: str) -> None:
     # Open a workbook and choose the column to format
-    workbook = xlsxwriter.Workbook('rich_strings.xlsx')
+    workbook = xlsxwriter.Workbook(ofilename)
     worksheet = workbook.add_worksheet()
     worksheet.set_column(first_col=0, last_col=2, width=40)
     # Set up some formats to use.
@@ -58,6 +58,7 @@ if __name__ == '__main__':
     string_b = "The slow brown fox walked over a lazy cat"
     string_c = "How now brown cow"
     string_d = "How then brown hen"
+
     output_to_excel_worksheet([[string_c, string_d], [string_a, string_b]])
 
     # Step by step test
