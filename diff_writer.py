@@ -3,7 +3,7 @@ from xlsxwriter.worksheet import Format
 from difflib import SequenceMatcher
 
 
-def output_excel_formatting(orig: str, new: str, f_uline: Format, f_sout: Format, f_norm: Format, wr: Format) -> list:
+def output_excel_formatting(orig: str, new: str, f_uline: Format, f_stkout: Format, f_norm: Format, wr: Format) -> list:
     # Matcher gets a sequence of "opcodes" which say to insert, delete, etc. blocks of text.
     matcher = SequenceMatcher(None, orig, new)
     opcodes = matcher.get_opcodes()
@@ -12,20 +12,20 @@ def output_excel_formatting(orig: str, new: str, f_uline: Format, f_sout: Format
     for tag, i1, i2, j1, j2 in opcodes:
         if tag == 'equal':
             result.append(f_norm)
-            result.append("".join(orig[i1:i2]))
+            result.append(orig[i1:i2])
         elif tag == 'insert':
             result.append(f_uline)
-            result.append("".join(new[j1:j2]))
+            result.append(new[j1:j2])
         elif tag == 'delete':
             if orig[i1:i2] != "\n":
-                result.append(f_sout)
-                result.append("".join(orig[i1:i2].replace("\n", "")))
+                result.append(f_stkout)
+                result.append(orig[i1:i2].replace("\n", ""))
         elif tag == 'replace':
             if orig[i1:i2] != "\n":
-                result.append(f_sout)
-                result.append("".join(orig[i1:i2].replace("\n", "")))
+                result.append(f_stkout)
+                result.append(orig[i1:i2].replace("\n", ""))
             result.append(f_uline)
-            result.append("".join(new[j1:j2]))
+            result.append(new[j1:j2])
 
     result.append(wr)
     return result
