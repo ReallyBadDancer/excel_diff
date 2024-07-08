@@ -1,5 +1,4 @@
 from openpyxl import load_workbook
-from redlines import Redlines
 from diff_writer import output_to_excel_worksheet
 from pprint import pp
 

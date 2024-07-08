@@ -49,7 +49,6 @@ def output_to_excel_worksheet(diff_list: list, ofilename: str) -> None:
         diff = output_excel_formatting(s1, s2, underline, strikeout, normal, wrap)
         worksheet.write_rich_string(row, 2, *diff)
 
-    # worksheet.write_rich_string(0, 2, *excel_data)
     workbook.close()
 
 
@@ -60,18 +59,3 @@ if __name__ == '__main__':
     string_d = "How then brown hen"
 
     output_to_excel_worksheet([[string_c, string_d], [string_a, string_b]])
-
-    # Step by step test
-    # workbook = xlsxwriter.Workbook('xlsxwriter_test.xlsx')
-    # worksheet = workbook.add_worksheet()
-    # worksheet.set_column(first_col=0, last_col=2, width=30)
-    # # Set up some formats to use.
-    # normal = workbook.add_format()
-    # underline = workbook.add_format({'underline': True, 'font_color': 'green'})
-    # strikeout = workbook.add_format({'font_strikeout': True, 'font_color': 'red'})
-    # wrap = workbook.add_format()
-    # wrap.set_text_wrap()
-    # format_list = [normal, "Test", underline, " Underline"]
-    # worksheet.write_rich_string(0, 0, *format_list)
-    # workbook.close()
-
