@@ -17,7 +17,10 @@ row_list = []
 for row in ws.values:
     value_list = []
     for cell in row:
-        value_list.append(cell)
+        if cell and "\n\n" in cell:  # Removes annoying extra carriage returns in Jama exports.
+            value_list.append(cell.replace("\n\n", "\n"))
+        else:
+            value_list.append(cell)
     if len(value_list) != 2:
         raise ValueError("Can only diff a two-column spreadsheet. "
                          "Please update spreadsheet and be sure to delete extra whitespace.")
