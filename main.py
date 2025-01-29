@@ -13,6 +13,8 @@ print(f"Running diff on {ifile}") if ifile else print(f"Running diff on test.xls
 wb = load_workbook(ifile)
 ws = wb.active
 
+# Walk through a spreadsheet with exactly two columns of data, and create a list of lists of the form:
+# [cell A string, cell B string] for comparison in the diff_writer.output_to_excel_worksheet funciton.
 row_list = []
 for row in ws.values:
     value_list = []
