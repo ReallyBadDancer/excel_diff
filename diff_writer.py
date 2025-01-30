@@ -6,13 +6,12 @@ import pandas as pd
 
 class DiffWriter:
     """
-    Takes two Excel files with the following columns, and creates a new excel file with the old
-    and new data. Input Excel files must have the following columns:
+    Takes two Excel files with an ID field and any number of data fields, and creates a new Excel file with the old
+    and new data merged on the ID field. Input Excel files must have the following columns:
     ID: Jama ID
-    Description: Requirement description text
-    Clarifying Information: Requirement clarifying information text
+    Data Fields: Columns of data with identical field names between orig and updated spreadsheets.
     """
-    def __init__(self, orig_fname: str, updated_fname: str, dest_fname: str):
+    def __init__(self, orig_fname: str, updated_fname: str, redline_cols: tuple, dest_fname: str):
         self.orig_fname = orig_fname  # Excel file with original requirement data
         self.updated_fname = updated_fname  # Excel file with modified requirement data
         self.dest_fname = dest_fname  # Output Excel file
@@ -24,8 +23,9 @@ class DiffWriter:
         self.df = self.compare_spreadsheets()  # Create a dataframe with orig, updated, orig -> updated redline data.
         self.df.fillna("", inplace=True)  # Replace NaN with empty strings
         print("Created dataframe from orig/dest requirement data.")
-        self.add_redline_column_to_df("Description")
-        self.add_redline_column_to_df("Clarifying Information")
+        self.redline_cols = redline_cols
+        for col in redline_cols:
+            self.add_redline_column_to_df(col)
         print("Done creating redlines for requirement data.")
         self.output_to_excel()
         print("Done writing output to Excel.")
@@ -49,9 +49,9 @@ class DiffWriter:
 
     def compare_spreadsheets(self) -> pd.DataFrame:
         """
-        Takes in two spreadsheets, each with three fields: ID, Description, and Clarifying Information.
+        Takes in two spreadsheets, each with identical fields: ID, and an arbitrary number of other data fields.
         Output is a dictionary that is a merged version of the spreadsheets indexed to the updated file that
-        has the contents of the description and clarifying information side by side for comparison in the redline tool.
+        has the contents of the data fields side by side for comparison in the redline tool.
 
         :return: Dataframe containing the merged spreadsheet data.
         """
@@ -131,14 +131,10 @@ class DiffWriter:
             :return: None
             """
 
-        headings = ["ID",
-                    "Description_old",
-                    "Description_new",
-                    "Description_redline",
-                    "Clarifying Information_old",
-                    "Clarifying Information_new",
-                    "Clarifying Information_redline",
-                    ]
+        headings = ["ID"]
+        for heading in self.redline_cols:
+            headings.extend([f"{heading}_old", f"{heading}_new", f"{heading}_redline"])
+        print("Found headings: ", headings)
 
         for inx, row in enumerate(self.df.to_dict(orient='records')):
             for jnx, heading in enumerate(headings):
@@ -148,7 +144,7 @@ class DiffWriter:
                     elif row[heading] and len(row[heading]) == 2:
                         if not row[headings[jnx-2]]:  # Old description/CI doesn't exist.
                             self.worksheet.write(inx, jnx, row[headings[jnx-1]], self.underline)  # Write new text.
-                        if not row[headings[jnx-1]]:
+                        elif not row[headings[jnx-1]]:
                             self.worksheet.write(inx, jnx, row[headings[jnx-2]], self.strikeout)  # Write deleted txt.
                     else:
                         self.worksheet.write(inx, jnx, "", self.normal)  # Write blank string to cell
