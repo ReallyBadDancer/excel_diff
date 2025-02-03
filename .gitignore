@@ -1,1 +1,4 @@
-/diff.xlsx
+*.xls*
+git-filter-repo
+/inputs/
+/archive/
