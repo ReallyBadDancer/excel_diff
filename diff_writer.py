@@ -39,7 +39,7 @@ class DiffWriter:
         # Open a workbook and choose the column to format
         workbook = xlsxwriter.Workbook(self.dest_fname)
         worksheet = workbook.add_worksheet()
-        worksheet.set_column(first_col=0, last_col=6, width=50)
+        worksheet.set_column(first_col=0, last_col=25, width=50)
         # Set up some formats to use.
         normal = workbook.add_format({'text_wrap': True})
         underline = workbook.add_format({'underline': True, 'font_color': 'green', 'text_wrap': True})
@@ -134,9 +134,16 @@ class DiffWriter:
         headings = ["ID"]
         for heading in self.redline_cols:
             headings.extend([f"{heading}_old", f"{heading}_new", f"{heading}_redline"])
-        print("Found headings: ", headings)
+        print("Found headings to diff: ", headings)
 
-        for inx, row in enumerate(self.df.to_dict(orient='records')):
+        for heading in list(self.df):
+            if heading not in headings:
+                headings.append(heading)
+
+        for inx, heading in enumerate(headings):
+            self.worksheet.write(0, inx, heading, self.normal)
+
+        for inx, row in enumerate(self.df.to_dict(orient='records'), start=1):
             for jnx, heading in enumerate(headings):
                 if "redline" in heading:
                     if row[heading] and len(row[heading]) > 2:
@@ -150,6 +157,7 @@ class DiffWriter:
                         self.worksheet.write(inx, jnx, "", self.normal)  # Write blank string to cell
                 else:
                     self.worksheet.write(inx, jnx, row[heading], self.normal)
+
         self.workbook.close()
 
 

@@ -5,7 +5,11 @@ NEW_DATA_EXCEL_FNAME = "updated.xlsx"
 REDLINE_COLS = (
     "Name",
     "Description",
-    "Clarifying Information"
+    "Clarifying Information",
+    "Release",
+    "Verification Method",
+    "Status",
+
 )
 
 if __name__ == "__main__":
