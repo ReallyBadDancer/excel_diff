@@ -113,7 +113,7 @@ class DiffWriter:
             elif tag == 'replace':
                 if orig[i1:i2] != "\n":
                     result.append(self.strikeout)
-                    result.append(orig[i1:i2].replace("\n", ""))  # Insert old text with strikeout red...
+                    result.append(orig[i1:i2].replace("\n", ""))  # Insert old text with strikeout red.
                 result.append(self.underline)
                 result.append(new[j1:j2])  # ...then insert new text with underline green.
 

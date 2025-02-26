@@ -5,3 +5,4 @@ This script will take two spreadsheets with identical headings and create a thir
   * Check that the specified files exist 
   * Check that specified headings exist
   * Check that the ID field exists
+  * Validate for similar column names that might be off by a few characters

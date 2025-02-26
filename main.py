@@ -9,7 +9,6 @@ REDLINE_COLS = (
     "Release",
     "Verification Method",
     "Status",
-
 )
 
 if __name__ == "__main__":
